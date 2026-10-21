@@ -1,57 +1,48 @@
-# 🚀 Getting started with Strapi
+# Learning Strapi — Content API
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+A Strapi 4.25.23 CMS project with content types for blogs, FAQs, gallery highlights, team members, programs, and statistics. Blog content includes a slug, author, description, cover image, block content, and a media gallery.
 
-### `develop`
+## Requirements
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+The package declares Node.js `>=18.0.0 <=20.x.x` and npm `>=6.0.0`. SQLite is the default database and `better-sqlite3` is included.
 
+## Local development
+
+```sh
+git clone https://github.com/Zoiku/learningstrapi.git
+cd learningstrapi
+npm install
 ```
+
+Copy `.env.example` to a private local `.env` file. Replace its placeholder application keys, token salts, and JWT secrets with your own generated values. The server reads `HOST` (default `0.0.0.0`), `PORT` (default `1337`), and an optional `URL`.
+
+```sh
 npm run develop
-# or
-yarn develop
 ```
 
-### `start`
+Open `http://localhost:1337/admin` to configure a local administrator, edit content, and set API permissions.
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+The repository contains an existing `.tmp/data.db`. Back it up before modifying it, or explicitly configure `DATABASE_FILENAME` to use a separate development database. A clone may therefore contain existing data rather than a blank CMS.
 
-```
-npm run start
-# or
-yarn start
-```
+## Configuration
 
-### `build`
+- `config/database.js`: database selection and connection settings.
+- `config/server.js`: host, port, public URL, and app keys.
+- `config/admin.js`: admin and token settings.
+- `config/plugins.js`: sendmail email provider with placeholder sender addresses.
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+The database config includes other client options, but their drivers are not declared in `package.json`; additional configuration and dependencies are required to switch away from SQLite. Email delivery also requires a working mail setup.
 
-```
-npm run build
-# or
-yarn build
-```
+## Commands
 
-## ⚙️ Deployment
+- `npm run develop`: development mode with reload.
+- `npm run build`: builds the administration interface.
+- `npm start`: starts Strapi without development reload.
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+No test script is declared.
 
-## 📚 Learn more
+## Content and deployment
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
+Content schemas, controllers, routes, and services live under `src/api/`. API availability depends on Strapi permissions and publication state.
 
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
-
----
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+For deployment, build the admin interface, provide environment settings, and persist the database and uploaded media. Verify content creation, publication, permissions, uploads, and email behavior with development data first.
